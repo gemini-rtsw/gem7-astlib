@@ -3,10 +3,10 @@
 #  Install script for Gemini astlib library
 #
 
-slalib_dir=/gemini/epics3.13.4/slalib/slalib
-timelib_dir=/gemini/epics3.13.4/timelib/timelib
+slalib_dir=/gemini/GEM8.5/slalib/slalib
+timelib_dir=/gemini/GEM8.5/timelib/timelib
 
-applSetup.pl -T mv167 -T ppc604 -I src -I startup -d $slalib_dir -d $timelib_dir $1 > $2 2>&1
+applSetup.pl -T mv167 -T ppc604_long -I src -I startup -d $slalib_dir -d $timelib_dir $1 > $2 2>&1
 
 gmake >> $2 2>&1
 
