@@ -106,9 +106,9 @@ int astCtx2tr ( struct WCS_CTX ctx, FRAMETYPE frame,
 **
 **  Called:  timeThenD, astCoco, slaAtmdsp, slaDs2tp, slaFitxy
 **
-**  P.T.Wallace   13 November 1997
+**  P.T.Wallace   22 March 1999
 **
-**  Copyright RAL 1997.  All rights reserved.
+**  Copyright RAL 1999.  All rights reserved.
 */
 
 #define GRID 100.0    /* Spacing for sample points (mm) */
@@ -127,7 +127,7 @@ int astCtx2tr ( struct WCS_CTX ctx, FRAMETYPE frame,
    };
 
 /* Corresponding WCS standard coordinates */
-   double xieta[4][2];
+   double xieta[5][2];
 
    double date, a, b;
    int i, j;
