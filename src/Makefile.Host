@@ -6,7 +6,7 @@ include $(APPLIC_TOP)/config/CONFIG
 
 SRCS.c  = $(wildcard ../*.c)
 LIBOBJS = $(strip $(patsubst ../%.c,    %.o, $(SRCS.c)))
-LIBRARY = sla
+LIBRARY = ast
 
 #	Add-on CFLAGS that are needed by this Makefile.
 #	(If possible, all system specific flags should be
