@@ -109,6 +109,8 @@ int astCtx2tr ( struct WCS_CTX ctx, FRAMETYPE frame,
 **  P.T.Wallace   22 March 1999
 **
 **  Copyright RAL 1999.  All rights reserved.
+**
+**  21 Oct 02 - extend context to include optical distortion of telescope (CJM)
 */
 
 #define GRID 100.0    /* Spacing for sample points (mm) */
@@ -131,7 +133,8 @@ int astCtx2tr ( struct WCS_CTX ctx, FRAMETYPE frame,
 
    double date, a, b;
    int i, j;
-
+   double distort[6] ;
+   struct WCS wcstp ;
 
 /* Disallow mount az/el. */
    if ( frame == AZEL_MNT ) return -1;
@@ -173,19 +176,23 @@ int astCtx2tr ( struct WCS_CTX ctx, FRAMETYPE frame,
 
    /* The field centre. */
       if ( i == 0 ) {
-         wcsp->ab0[0] = a;
-         wcsp->ab0[1] = b;
+         wcstp.ab0[0] = a;
+         wcstp.ab0[1] = b;
       }
 
    /* To standard coordinates. */
-      slaDs2tp ( a, b, wcsp->ab0[0], wcsp->ab0[1],
+      slaDs2tp ( a, b, wcstp.ab0[0], wcstp.ab0[1],
                  &xieta[i][0], &xieta[i][1], &j );
       if ( j ) return -5;
    }
 
 /* Fit 6-coefficient linear model to the x/y and xi/eta samples. */
-   slaFitxy ( 6, 5, xieta, xy, wcsp->coeffs, &j );
+   slaFitxy ( 6, 5, xieta, xy, wcstp.coeffs, &j );
    if ( j ) return -6;
+
+/* Extend to include optical distortion */
+   astGetdistortion(distort);
+   astXtndtr (distort, wcstp, wcsp) ;
 
 /* Export the timestamp. */
    *time = ctx.time;
