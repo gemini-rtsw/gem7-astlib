@@ -3,5 +3,4 @@
 #  Install script for Gemini astlib library
 #
 
-applSetup -targets mv167 -include src -depends ../../../slalib  \
-          -depends ../../../timelib -subdir_file Makefile.Dirs
+applSetup.pl -T mv167 -T ppc604 -I src -d ../../../slalib -d ../../../timelib
