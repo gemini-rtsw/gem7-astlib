@@ -116,11 +116,11 @@ int astFITSs ( struct WCS wcsij,
 
 
 /* Get the values. */
-   if ( j = astFITSv ( wcsij, frame, eqx, djm,
+   if ( (j = astFITSv ( wcsij, frame, eqx, djm,
                        ctype1_v, &crpix1_v, &crval1_v,
                        ctype2_v, &crpix2_v, &crval2_v,
                        &cd1_1_v, &cd1_2_v, &cd2_1_v, &cd2_2_v,
-                       radecsys_v, &equinox_v, &mjdobs_v ) ) return j;
+                       radecsys_v, &equinox_v, &mjdobs_v )) ) return j;
 
 /* Build the strings. */
    sprintf ( ctype1,
