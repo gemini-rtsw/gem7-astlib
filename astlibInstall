@@ -1,0 +1,13 @@
+#! /bin/sh -f
+#
+#  Install script for Gemini astlib library
+#
+
+slalib_dir=/gemini/slalib/slalib
+timelib_dir=/gemini/timelib/timelib
+
+applSetup.pl -T mv167 -T ppc604 -I src -I startup -d $slalib_dir -d $timelib_dir $1 > $2 2>&1
+
+gmake >> $2 2>&1
+
+exit 0
