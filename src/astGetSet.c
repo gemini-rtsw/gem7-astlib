@@ -16,7 +16,9 @@ static double Ctxa[AST_CTXA_SIZE] = {
     0.0, 0.0, 0.70710678, 0.70710678,
     128000.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 1.0, 0.0, 0.0, 275.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 1.0, 0.0, 0.0, 0.0, 1.0
     };
 #if defined (vxWorks)
 static SEM_ID AstSemId;
@@ -248,6 +250,98 @@ int astSetctx ( double ctxa[AST_CTXA_SIZE] )
 
 /* Copy the context structure array. */
    for ( i = 0; i < AST_CTXA_SIZE; i++ ) Ctxa[i] = ctxa[i];
+
+/* Release the semaphore. */
+#if defined (vxWorks)
+   (void) semGive( AstSemId );
+#endif
+
+   return 0;
+}
+
+int astGetdistortion ( double distort[6] )
+/*
+**  - - - - - - - - - - - - - - - -
+**   a s t G e t d i s t o r t i o n 
+**  - - - - - - - - - - - - - - - -
+**
+**  Fetch the optical distortion coefficients that describe the
+**  departures of the telescope field from a simple tangent
+**  plane projection.
+**
+**  GIVEN (argument):
+**    distort      double*   affine coefficients describing distortion 
+**
+**  Called:  semMCreate, semTake, semGive
+**
+**  C. J. Mayer  21 October 2002 
+**
+**  Copyright Observatory Sciences Ltd. 2002  All rights reserved.
+*/
+
+{
+   int i;
+
+/* Take the semaphore (creating it if necessary). */
+#if defined (vxWorks)
+   if ( !AstSemId ) 
+      AstSemId = semMCreate( SEM_Q_PRIORITY |
+                             SEM_DELETE_SAFE |
+                             SEM_INVERSION_SAFE);
+   (void) semTake( AstSemId, WAIT_FOREVER );
+#endif
+
+/* Copy the context structure array. */
+   for ( i = 0; i < 6; i++ ) distort[i] = Ctxa[i+39] ;
+
+/* Release the semaphore. */
+#if defined (vxWorks)
+   (void) semGive( AstSemId );
+#endif
+
+   return 0;
+}
+
+int astSetdistortion ( double distort[6] )
+/*
+**  - - - - - - - - - - - - - - - -
+**   a s t S e t d i s t o r t i o n 
+**  - - - - - - - - - - - - - - - -
+**
+**  Set the optical distortion coefficients that describe the
+**  departures of the telescope field from a simple tangent
+**  plane projection.
+**
+**  This routine would normally only be called when simulating the
+**  WCS context. Most systems will simply call astSetctx after fetching 
+**  the information from the TCS. If a system is simulating the WCS
+**  context and dosn't call this routine then a simple tangent plane
+**  projection is used. 
+**
+**  GIVEN (argument):
+**    distort      double*   affine coefficients describing distortion 
+**
+**  Called:  semMCreate, semTake, semGive
+**
+**  C. J. Mayer  21 October 2002 
+**
+**  Copyright Observatory Sciences Ltd. 2002  All rights reserved.
+*/
+
+{
+   int i;
+
+/* Take the semaphore (creating it if necessary). */
+#if defined (vxWorks)
+   if ( !AstSemId ) 
+      AstSemId = semMCreate( SEM_Q_PRIORITY |
+                             SEM_DELETE_SAFE |
+                             SEM_INVERSION_SAFE);
+   (void) semTake( AstSemId, WAIT_FOREVER );
+#endif
+
+/* Copy the context structure array. */
+   for ( i = 0; i < 6; i++ ) Ctxa[i+39] = distort[i];
 
 /* Release the semaphore. */
 #if defined (vxWorks)
