@@ -160,6 +160,7 @@ int astFITSv ( struct WCS wcsij,
 /* RA/Dec system. */
    switch ( frame ) {
 
+   case AZEL_MNT:
    case AZEL_TOPO:
       radecsys[0] = (char) '\0';
       break;
