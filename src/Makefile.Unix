@@ -21,7 +21,7 @@ SRCS.c	= $(wildcard ../*.c)
 LIBOBJS	=  astCoco.o    astCtx2tr.o  astGettr.o   astS2xy.o    astXy2s.o \
            astCocoR.o   astInvtr.o   astS2xyq.o   astXy2sq.o   astFITSs.o \
            astFITSv.o   astFitij.o   astSimctx.o  astRot.o     astGetSet.o \
-	   astSimctx_r.o
+	   astSimctx_r.o astXtndtr.o
 
 # Standard macros for files which are to be built and installed.
 # PROD (products) and SCRIPTS are installed in INSTALL_BIN
