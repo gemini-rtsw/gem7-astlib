@@ -5,3 +5,7 @@
 config
 epics
 rel
+bin
+include
+data
+lib
