@@ -15,7 +15,7 @@
 */
 
 /* Size of ast context array */
-#define AST_CTXA_SIZE 39
+#define AST_CTXA_SIZE 45 
 
 /* Tracking coordinate system (i.e. cosys values) */
 typedef enum { AZEL_MNT = 0,        /* 0  Mount Az/El */
@@ -102,6 +102,7 @@ int astFITSv ( struct WCS, FRAMETYPE, struct EPOCH, double,
                char*, double*, double*, char*, double*, double*, double*,
                double*, double*, double*, char*, double*, double* );
 int astGetctx ( struct WCS_CTX* );
+int astGetdistortion (double[]);
 int astGetpo ( struct PO* );
 int astGettr ( FRAMETYPE, struct EPOCH, double, int, struct WCS*, double* );
 int astInvtr ( struct WCS, struct WCS* );
@@ -111,6 +112,7 @@ int astS2xy ( double, double, FRAMETYPE, struct EPOCH,
               double, int, double*, double* );
 int astS2xyq ( double, double, struct WCS, double*, double* );
 int astSetctx ( double[AST_CTXA_SIZE] );
+int astSetdistortion (double[6]);
 int astSimctx ( double, double, double, double, double, double, double,
                 double, double, double, double, struct TELP, double[3][2],
                 double, double, FRAMETYPE, struct EPOCH, struct WCS_CTX* );
