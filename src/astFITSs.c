@@ -3,7 +3,7 @@
 #include "astsys.h"
 #include "astLib.h"
 int astFITSs ( struct WCS wcsij,
-               FRAMETYPE frame, struct EPOCH eqx, double tt,
+               FRAMETYPE frame, struct EPOCH eqx, double djm,
                char* ctype1, char* crpix1, char* crval1,
                char* ctype2, char* crpix2, char* crval2,
                char* cd1_1, char* cd1_2,
@@ -21,7 +21,7 @@ int astFITSs ( struct WCS wcsij,
 **    wcsij     struct     WCS transformation, pixels to sky
 **    frame     FRAMETYPE  type of sky coordinate system
 **    eqx       struct     equinox (mean RA/Decs only)
-**    tt        double     epoch (TT MJD)
+**    djm       double     epoch of observation (MJD: JD-2400000.5)
 **
 **  RETURNED (arguments):
 **    ctype1    char[81]   FITS header record:  CTYPE1
@@ -78,10 +78,15 @@ int astFITSs ( struct WCS wcsij,
 **  2  The keywords EQUINOX and/or RADECSYS may not be required.  An
 **     empty string is returned in such cases.
 **
-**  3  The present function returns strings.  Another function, astFITSv,
+**  3  The timescale for the epoch of observation, djm, is not defined
+**     by the current FITS standard.  TAI is a suitable choice;  UTC
+**     is not, strictly speaking, because expressing UTC as MJD leads
+**     to ambiguities during leap seconds.
+**
+**  4  The present function returns strings.  Another function, astFITSv,
 **     returns values.
 **
-**  4  Here is an example of the set of 13 strings returned by this routine:
+**  5  Here is an example of the set of 13 strings returned by this routine:
 **
 **     CTYPE1  = 'RA---TAN'           / gnomonic projection
 **     CRPIX1  =           984.048024 / pixel i-coordinate at rotator axis
@@ -95,12 +100,9 @@ int astFITSs ( struct WCS wcsij,
 **     CD2_2   =  0.00001012093669430 / yj rotation/skew/scale matrix element
 **     RADECSYS= 'FK5     '           / type of RA/Dec
 **     EQUINOX =            2000.0000 / epoch of mean equator & equinox
-**     MJD-OBS =     49560.6437637037 / epoch of observation (TT MJD)
+**     MJD-OBS =     49560.6433912037 / epoch of observation (TAI MJD)
 **
-**  4  The present function returns strings.  Another function, astFITSv,
-**     returns values.
-**
-**  P.T.Wallace   14 November 1998
+**  P.T.Wallace   22 November 1998
 **
 **  Copyright RAL 1998.  All rights reserved.
 */
@@ -114,7 +116,7 @@ int astFITSs ( struct WCS wcsij,
 
 
 /* Get the values. */
-   if ( j = astFITSv ( wcsij, frame, eqx, tt,
+   if ( j = astFITSv ( wcsij, frame, eqx, djm,
                        ctype1_v, &crpix1_v, &crval1_v,
                        ctype2_v, &crpix2_v, &crval2_v,
                        &cd1_1_v, &cd1_2_v, &cd2_1_v, &cd2_2_v,
@@ -158,7 +160,7 @@ int astFITSs ( struct WCS wcsij,
              "EQUINOX = %20.4f / epoch of mean equator & equinox",
              equinox_v );
    sprintf ( mjdobs,
-             "MJD-OBS = %20.10f / epoch of observation (TT MJD)",
+             "MJD-OBS = %20.10f / epoch of observation (TAI MJD)",
              mjdobs_v );
 
 /* Empty any records which are superfluous for this case. */

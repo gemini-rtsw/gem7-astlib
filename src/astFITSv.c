@@ -3,7 +3,7 @@
 #include "astsys.h"
 #include "astLib.h"
 int astFITSv ( struct WCS wcsij,
-               FRAMETYPE frame, struct EPOCH eqx, double tt,
+               FRAMETYPE frame, struct EPOCH eqx, double djm,
                char* ctype1, double* crpix1, double* crval1,
                char* ctype2, double* crpix2, double* crval2,
                double* cd1_1, double* cd1_2,
@@ -21,7 +21,7 @@ int astFITSv ( struct WCS wcsij,
 **    wcsij     struct     WCS transformation, pixels to sky
 **    frame     FRAMETYPE  type of sky coordinate system
 **    eqx       struct     equinox (mean RA/Decs only)
-**    tt        double     epoch (TT MJD)
+**    djm       double     epoch of observation (MJD: JD-2400000.5)
 **
 **  RETURNED (arguments):
 **    ctype1    char[9]    value for FITS keyword CTYPE1
@@ -82,12 +82,17 @@ int astFITSv ( struct WCS wcsij,
 **     such cases, a negative value is returned for equinox and an
 **     empty string for radecsys.
 **
-**  3  The present function returns values.  Another function, astFITSs,
-**     returns strings.  (Note that the argument tt is simply copied to
+**  3  The timescale for the epoch of observation, djm, is not defined
+**     by the current FITS standard.  TAI is a suitable choice;  UTC
+**     is not, strictly speaking, because expressing UTC as MJD leads
+**     to ambiguities during leap seconds.
+**
+**  4  The present function returns values.  Another function, astFITSs,
+**     returns strings.  (Note that the argument djm is simply copied to
 **     the argument mjd-obs as it is.  It is included merely to make the
 **     calls to the two functions match.)
 **
-**  4  Here is an example of the set of 13 values returned by this routine:
+**  5  Here is an example of the set of 13 values returned by this routine:
 **
 **     ctype1    "RA---TAN"            gnomonic projection
 **     crpix1    984.048024            pixel i-coordinate at rotator axis
@@ -101,9 +106,9 @@ int astFITSv ( struct WCS wcsij,
 **     cd2_2     0.00001012093669430   yj rotation/skew/scale matrix element
 **     radecsys  "FK5     "            type of RA/Dec
 **     equinox   2000.0000             epoch of mean equator & equinox
-**     mjd-obs   49560.6437637037      epoch of observation (TT MJD)
+**     mjd-obs   49560.6433912037      epoch of observation (TAI MJD)
 **
-**  P.T.Wallace   14 November 1998
+**  P.T.Wallace   22 November 1998
 **
 **  Copyright RAL 1998.  All rights reserved.
 */
@@ -185,7 +190,7 @@ int astFITSv ( struct WCS wcsij,
    }
 
 /* Epoch. */
-   *mjdobs = tt;
+   *mjdobs = djm;
 
    return 0;
 }
