@@ -9,7 +9,7 @@
 **  TCS coordinate transformation library macros and
 **  prototype function declarations.
 **
-**  P.T.Wallace   20 April 1998
+**  P.T.Wallace   12 November 1998
 **
 **  Copyright RAL 1998.  All rights reserved.
 */
@@ -95,10 +95,12 @@ int astCtx2tr ( struct WCS_CTX, FRAMETYPE, struct EPOCH,
                 double, int, struct WCS*, double* );
 int astFitij ( int, double[][2], double[][2], double[],
                double*, double*, double*, double* );
-int astFITS ( struct WCS, FRAMETYPE, struct EPOCH, double,
-              char*, char*, char*, char*, char*, char*,
-              char*, char*, char*, char*, char*, char*,
-              char*, char*, char*, char*, char* );
+int astFITSs ( struct WCS, FRAMETYPE, struct EPOCH, double,
+               char*, char*, char*, char*, char*, char*, char*,
+               char*, char*, char*, char*, char*, char* );
+int astFITSv ( struct WCS, FRAMETYPE, struct EPOCH, double,
+               char*, double*, double*, char*, double*, double*, double*,
+               double*, double*, double*, char*, double*, double* );
 int astGetctx ( struct WCS_CTX* );
 int astGetpo ( struct PO* );
 int astGettr ( FRAMETYPE, struct EPOCH, double, int, struct WCS*, double* );
