@@ -1,0 +1,7 @@
+#! /bin/sh -f
+#
+#  Install script for Gemini astlib library
+#
+
+applSetup -targets mv167 -include src -depends ../../../slalib  \
+          -depends ../../../timelib -subdir_file Makefile.subdirs
